@@ -13,4 +13,15 @@
     <string name="btn7">7</string>
     <string name="btn8">8</string>
     <string name="btn9">9</string>
+    <string name="temaA">temaA</string>
+    <string name="temaB">temaB</string>
+    <string name="scoreA">0</string>
+    <string name="scoreB">0</string>
+    <string name="button1">+1</string>
+    <string name="button2">+2</string>
+    <string name="button3">+3</string>
+    <string name="button4">+4</string>
+    <string name="button5">+5</string>
+    <string name="button6">+6</string>
+    <string name="todo">TODO</string>
 </resources>
