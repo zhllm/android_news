@@ -2,64 +2,57 @@ package com.beyourself.android_news;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-<<<<<<< HEAD
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-=======
->>>>>>> parent of c426164... viewmodel
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.beyourself.android_news.databinding.ActivityMainBinding;
-
 public class MainActivity extends AppCompatActivity {
-<<<<<<< HEAD
-    MyViewModel myViewModel;
-    ActivityMainBinding binding;
-=======
-    Button button2;
-    TextView textView;
-    String Tag = "myLog";
 
->>>>>>> parent of c426164... viewmodel
+    ViewModelWithLiveData viewModelWithLiveData;
+    TextView textView;
+    ImageButton imageButtonLike, imageButtonDisLike;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.textView);
-        button2 = findViewById(R.id.button2);
+        imageButtonLike = findViewById(R.id.imageButton2);
+        imageButtonDisLike = findViewById(R.id.imageButton3);
 
-        if (savedInstanceState != null) {
-            String value = savedInstanceState.getString("Key");
-            textView.setText(value);
-        }
+        viewModelWithLiveData =
+                new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory())
+                        .get(ViewModelWithLiveData.class);
 
-
-<<<<<<< HEAD
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        myViewModel = new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory())
-                .get(MyViewModel.class);
-        binding.setData(myViewModel);
-        binding.setLifecycleOwner(this);
-=======
-
-        button2.setOnClickListener(new View.OnClickListener() {
+        viewModelWithLiveData.getLikeNumber().observe(this, new Observer<Integer>() {
             @Override
-            public void onClick(View v) {
-                textView.setText(R.string.btn2);
+            public void onChanged(Integer integer) {
+                textView.setText(String.valueOf(integer));
             }
         });
->>>>>>> parent of c426164... viewmodel
+
+        imageButtonLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModelWithLiveData.addLikeNumber(1);
+            }
+        });
+
+        imageButtonDisLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModelWithLiveData.addLikeNumber(-1);
+            }
+        });
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("Key", textView.getText().toString());
     }
 }
