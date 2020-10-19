@@ -2,44 +2,51 @@ package com.beyourself.android_news;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    MyViewModel myViewModel;
-    TextView textView;
-    Button button1, button2;
 
+    ViewModelWithLiveData viewModelWithLiveData;
+    TextView textView;
+    ImageButton imageButtonLike, imageButtonDisLike;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        myViewModel =
-                new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory())
-                        .get(MyViewModel.class);
-
         textView = findViewById(R.id.textView);
-        button1 = findViewById(R.id.button);
-        button2 = findViewById(R.id.button6);
-        textView.setText(String.valueOf(myViewModel.number));
-        button1.setOnClickListener(new View.OnClickListener() {
+        imageButtonLike = findViewById(R.id.imageButton2);
+        imageButtonDisLike = findViewById(R.id.imageButton3);
+
+        viewModelWithLiveData =
+                new ViewModelProvider(this, new ViewModelProvider.NewInstanceFactory())
+                        .get(ViewModelWithLiveData.class);
+
+        viewModelWithLiveData.getLikeNumber().observe(this, new Observer<Integer>() {
             @Override
-            public void onClick(View v) {
-                myViewModel.number ++;
-                textView.setText(String.valueOf(myViewModel.number));
+            public void onChanged(Integer integer) {
+                textView.setText(String.valueOf(integer));
             }
         });
-        button2.setOnClickListener(new View.OnClickListener() {
+
+        imageButtonLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myViewModel.number += 2;
-                textView.setText(String.valueOf(myViewModel.number));
+                viewModelWithLiveData.addLikeNumber(1);
+            }
+        });
+
+        imageButtonDisLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModelWithLiveData.addLikeNumber(-1);
             }
         });
     }
