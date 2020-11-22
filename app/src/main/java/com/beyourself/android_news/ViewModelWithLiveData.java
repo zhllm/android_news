@@ -15,6 +15,5 @@ public class ViewModelWithLiveData extends ViewModel {
     }
     public void addLikeNumber(int n) {
         LikeNumber.setValue(LikeNumber.getValue() + n);
-
     }
 }
